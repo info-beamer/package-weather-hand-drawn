@@ -1,0 +1,33 @@
+{
+    "name": "Weather Display",
+    "permissions": {
+        "network": "Needs to fetch weather information"
+    },
+    "options": [{
+        "title": "API Key",
+        "ui_width": 6,
+        "name": "key",
+        "doc_link": true,
+        "type": "string",
+        "default": ""
+    }, {
+        "title": "Location",
+        "ui_width": 6,
+        "name": "location",
+        "doc_link": true,
+        "type": "string",
+        "default": "Karlsruhe"
+    }, {
+        "title": "Time Zone",
+        "ui_width": 4,
+        "name": "timezone",
+        "doc_link": true,
+        "type": "select",
+        "hint": "The timezone",
+        "options": [
+            ["UTC", "UTC"],
+            ["Europe/Berlin", "Europa / Berlin"]
+        ],
+        "default": "UTC"
+    }]
+}

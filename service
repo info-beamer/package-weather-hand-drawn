@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+import os
+import urllib
+import urllib2
+import traceback
+import time
+import datetime
+import pytz
+
+from hosted import CONFIG, NODE, UPSTREAM
+
+def download(key, what, where):
+    try:
+        url = "http://api.wunderground.com/api/%s/%s/q/%s.json" % (
+            key, what, urllib.quote(where)
+        )
+        print url
+        response = urllib2.urlopen(url)
+        with file("%s.json.tmp" % what, "wb") as f:
+            f.write(response.read())
+        os.rename("%s.json.tmp" % what, "%s.json" % what)
+    except:
+        traceback.print_exc()
+        time.sleep(10)
+
+def current_time():
+    timezone = pytz.timezone(CONFIG['timezone'])
+    now = datetime.datetime.utcnow()
+    now = now.replace(tzinfo=pytz.utc)
+    now = now.astimezone(timezone)
+    now = now.replace(tzinfo=None)
+    return now
+
+def send_clock():
+    now = current_time()
+    since_midnight = (
+        now - 
+        now.replace(hour=0, minute=0, second=0, microsecond=0)
+    )
+    seconds_since_midnight = since_midnight.seconds + since_midnight.microseconds / 1000000.
+
+    NODE['/clock/set'](seconds_since_midnight)
+
+def idle(seconds):
+    end = time.time() + seconds
+    while time.time() < end:
+        send_clock()
+        time.sleep(5)
+
+def main():
+    while 1:
+        if not CONFIG['key']:
+            time.sleep(5)
+            continue
+        download(CONFIG['key'], 'conditions', CONFIG['location'])
+        download(CONFIG['key'], 'forecast', CONFIG['location'])
+        idle(900)
+
+if __name__ == "__main__":
+    main()
