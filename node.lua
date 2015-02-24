@@ -1,8 +1,5 @@
 hosted_init()
 
-sys.set_flag("slow_gc")
-sys.set_flag("no_deadline")
-
 gl.setup(1024, 768)
 
 local json = require 'json'
@@ -10,6 +7,24 @@ local json = require 'json'
 util.auto_loader(_G)
 
 local overlay
+
+function table.filter(t, predicate)
+    local j = 1
+
+    for i, v in ipairs(t) do
+        if predicate(v) then
+            t[j] = v
+            j = j + 1
+        end
+    end
+
+    while t[j] ~= nil do
+        t[j] = nil
+        j = j + 1
+    end
+
+    return t
+end
 
 function draw_lauri(gfx, x, y, rot, alpha)
     local w, h = gfx:size()
