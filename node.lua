@@ -4,7 +4,7 @@ gl.setup(1024, 768)
 
 local json = require 'json'
 
-util.auto_loader(_G)
+local res = util.auto_loader(_G)
 
 local overlay
 
@@ -90,7 +90,7 @@ function cloudgenerator(rain)
         last = now
 
         for idx, cloud in ipairs(clouds) do
-            draw_lauri(_G[cloud.img], 
+            draw_lauri(res[cloud.img], 
                 cloud.x, cloud.y, 
                 math.sin(sys.now() * cloud.freq + cloud.phase) * cloud.rot
             )
@@ -219,7 +219,7 @@ function node.render()
 
         -- Vorhersage
         shader:use{bright = 0.5 - bright}
-        bottom:draw(0, HEIGHT-160, WIDTH, HEIGHT)
+        res.bottom:draw(0, HEIGHT-160, WIDTH, HEIGHT)
         shader:deactivate()
 
         for idx, forecast in ipairs(forecasts) do
@@ -228,7 +228,7 @@ function node.render()
             end
             local x = 20 + (idx-1) * 270
             local icon = forecast.icon
-            icon = _G[icon]
+            icon = res[icon]
             if not icon then
                 print("kein wetter icon fuer " .. forecast.icon)
             else
@@ -239,7 +239,7 @@ function node.render()
             font:write(x + 120, 710, forecast.low.celsius, 40, .2,.2,.2,1)
             font:write(x, 745, forecast.conditions, 20, 1,1,1,0.8)
         end
-        util.draw_correct(wunderground, 800, 650, 1020, 760)
+        util.draw_correct(res.wunderground, 800, 650, 1020, 760)
 
         -- font:write(20, 700, weather.forecast_information.city, 52, 1,1,1,0.8)
 
@@ -249,17 +249,17 @@ function node.render()
     gl.clear(0.3*bright, 0.5*bright, 0.6*bright, 1)
 
     -- shader:use{bright = 1 - bright}
-    draw_lauri(weather_star1, 100, 200, sys.now() * 31, 1 - bright)
-    draw_lauri(weather_star2, 700, 220, sys.now() * 22, 1 - bright)
-    draw_lauri(weather_star3, 500, 50, sys.now() * 23, 1 - bright)
+    draw_lauri(res.weather_star1, 100, 200, sys.now() * 31, 1 - bright)
+    draw_lauri(res.weather_star2, 700, 220, sys.now() * 22, 1 - bright)
+    draw_lauri(res.weather_star3, 500, 50, sys.now() * 23, 1 - bright)
 
-    draw_lauri(weather_sun, 350 + sun_x * 300, 220 + sun_y * 220, sys.now() * 10, 1)
-    draw_lauri(weather_moon, 350 + moon_x * 700, 400 + moon_y * 400)
+    draw_lauri(res.weather_sun, 350 + sun_x * 300, 220 + sun_y * 220, sys.now() * 10, 1)
+    draw_lauri(res.weather_moon, 350 + moon_x * 700, 400 + moon_y * 400)
 
-    draw_lauri(weather_bg1, -10 + math.sin(sys.now()) * 5, 230)
-    draw_lauri(weather_bg2, 0, 250)
+    draw_lauri(res.weather_bg1, -10 + math.sin(sys.now()) * 5, 230)
+    draw_lauri(res.weather_bg2, 0, 250)
     rc.draw()
-    draw_lauri(weather_bg3, -10 - math.sin(sys.now()) * 5, 380)
+    draw_lauri(res.weather_bg3, -10 - math.sin(sys.now()) * 5, 380)
     cc.draw()
     -- shader:deactivate()
     overlay:draw(0, 0, WIDTH, HEIGHT)
