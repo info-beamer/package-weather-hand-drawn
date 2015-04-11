@@ -223,15 +223,15 @@ function node.render()
     local temp = tonumber(conditions.temp_c)
     local str_temp = string.format("%d", temp)
     if temp < -9 then 
-        res.font:write(520, 0, str_temp, 250, 1,1,1,0.9)
+        res.font:write(520, 50, str_temp, 250, 1,1,1,0.9)
     elseif temp < 0 then 
-        res.font:write(680, 0, str_temp, 250, 1,1,1,0.9)
+        res.font:write(680, 50, str_temp, 250, 1,1,1,0.9)
     elseif temp < 10 then
-        res.font:write(720, 0, str_temp, 250, 1,1,1,0.9)
+        res.font:write(720, 50, str_temp, 250, 1,1,1,0.9)
     else
-        res.font:write(630, 0, str_temp, 250, 1,1,1,0.9)
+        res.font:write(630, 50, str_temp, 250, 1,1,1,0.9)
     end
-    res.font:write(900, 18, "°C", 100, 1,1,1,0.9)
+    res.font:write(900, 68, "°C", 100, 1,1,1,0.9)
 
     for idx, forecast in ipairs(forecasts) do
         if idx == 4 then
