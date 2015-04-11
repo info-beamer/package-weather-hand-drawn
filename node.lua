@@ -6,8 +6,6 @@ local json = require 'json'
 
 local res = util.auto_loader()
 
-local overlay
-
 function table.filter(t, predicate)
     local j = 1
 
@@ -158,13 +156,11 @@ util.file_watch("conditions.json", function(content)
     else
         cc.set_factors(factors)
     end
-    overlay = nil
 end)
 
 util.file_watch("forecast.json", function(content)
     print("loading forecasts")
     forecasts = json.decode(content).forecast.simpleforecast.forecastday
-    overlay = nil
 end)
 
 local shader = resource.create_shader[[
@@ -196,49 +192,6 @@ function node.render()
     local moon_y = math.cos((hour+9)/ 24 * 2 * math.pi)
     local bright = 0.5 - sun_y / 2 
 
-    if not overlay and conditions and forecasts then
-        gl.clear(1, 1, 1, 0)
-        -- Zusammenfassung links oben
-        res.font:write(20, 10, "Wind: " .. conditions.wind_string, 40, 1,1,1,1)
-        res.font:write(20, 60, "Humidity: " .. conditions.relative_humidity, 40, 1,1,1,1)
-        res.font:write(20, 110,conditions.weather, 40, 1,1,1,1)
-
-        -- Grosse Temperaturanzeige
-        local temp = tonumber(conditions.temp_c)
-        local str_temp = string.format("%d", temp)
-        if temp < -9 then 
-            res.font:write(520, 0, str_temp, 250, 1,1,1,0.9)
-        elseif temp < 0 then 
-            res.font:write(680, 0, str_temp, 250, 1,1,1,0.9)
-        elseif temp < 10 then
-            res.font:write(720, 0, str_temp, 250, 1,1,1,0.9)
-        else
-            res.font:write(630, 0, str_temp, 250, 1,1,1,0.9)
-        end
-        res.font:write(900, 18, "°C", 100, 1,1,1,0.9)
-
-        for idx, forecast in ipairs(forecasts) do
-            if idx == 4 then
-                break
-            end
-            local x = 20 + (idx-1) * 270
-            local icon = forecast.icon
-            icon = res[icon]
-            if not icon then
-                print("kein wetter icon fuer " .. forecast.icon)
-            else
-                icon:draw(x, 640, x + 100, 740)
-            end
-            res.font:write(x + 120, 640, forecast.date.weekday_short, 40, 1,1,1,0.8)
-            res.font:write(x + 120, 675, forecast.high.celsius, 40, 1,1,1,1)
-            res.font:write(x + 120, 710, forecast.low.celsius, 40, .2,.2,.2,1)
-            res.font:write(x, 745, forecast.conditions, 20, 1,1,1,0.8)
-        end
-        util.draw_correct(res.wunderground, 800, 650, 1020, 760)
-
-        overlay = resource.create_snapshot()
-    end
-
     gl.clear(0.3*bright, 0.5*bright, 0.6*bright, 1)
 
     -- shader:use{bright = 1 - bright}
@@ -261,5 +214,41 @@ function node.render()
     res.bottom:draw(0, HEIGHT-160, WIDTH, HEIGHT)
     shader:deactivate()
 
-    overlay:draw(0, 0, WIDTH, HEIGHT)
+    -- Zusammenfassung links oben
+    res.font:write(20, 10, "Wind: " .. conditions.wind_string, 40, 1,1,1,1)
+    res.font:write(20, 60, "Humidity: " .. conditions.relative_humidity, 40, 1,1,1,1)
+    res.font:write(20, 110,conditions.weather, 40, 1,1,1,1)
+
+    -- Grosse Temperaturanzeige
+    local temp = tonumber(conditions.temp_c)
+    local str_temp = string.format("%d", temp)
+    if temp < -9 then 
+        res.font:write(520, 0, str_temp, 250, 1,1,1,0.9)
+    elseif temp < 0 then 
+        res.font:write(680, 0, str_temp, 250, 1,1,1,0.9)
+    elseif temp < 10 then
+        res.font:write(720, 0, str_temp, 250, 1,1,1,0.9)
+    else
+        res.font:write(630, 0, str_temp, 250, 1,1,1,0.9)
+    end
+    res.font:write(900, 18, "°C", 100, 1,1,1,0.9)
+
+    for idx, forecast in ipairs(forecasts) do
+        if idx == 4 then
+            break
+        end
+        local x = 20 + (idx-1) * 270
+        local icon = forecast.icon
+        icon = res[icon]
+        if not icon then
+            print("kein wetter icon fuer " .. forecast.icon)
+        else
+            icon:draw(x, 640, x + 100, 740)
+        end
+        res.font:write(x + 120, 640, forecast.date.weekday_short, 40, 1,1,1,0.8)
+        res.font:write(x + 120, 675, forecast.high.celsius, 40, 1,1,1,1)
+        res.font:write(x + 120, 710, forecast.low.celsius, 40, .2,.2,.2,1)
+        res.font:write(x, 745, forecast.conditions, 20, 1,1,1,0.8)
+    end
+    util.draw_correct(res.wunderground, 800, 650, 1020, 760)
 end
