@@ -217,11 +217,6 @@ function node.render()
         end
         res.font:write(900, 18, "°C", 100, 1,1,1,0.9)
 
-        -- Vorhersage
-        shader:use{bright = 0.5 - bright}
-        res.bottom:draw(0, HEIGHT-160, WIDTH, HEIGHT)
-        shader:deactivate()
-
         for idx, forecast in ipairs(forecasts) do
             if idx == 4 then
                 break
@@ -260,5 +255,11 @@ function node.render()
     draw_lauri(res.weather_bg3, -10 - math.sin(sys.now()) * 5, 380)
     cc.draw()
     -- shader:deactivate()
+
+    -- Vorhersage
+    shader:use{bright = 0.5 - bright}
+    res.bottom:draw(0, HEIGHT-160, WIDTH, HEIGHT)
+    shader:deactivate()
+
     overlay:draw(0, 0, WIDTH, HEIGHT)
 end
