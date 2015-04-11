@@ -4,7 +4,7 @@ gl.setup(1024, 768)
 
 local json = require 'json'
 
-local res = util.auto_loader(_G)
+local res = util.auto_loader()
 
 local overlay
 
@@ -199,23 +199,23 @@ function node.render()
     if not overlay and conditions and forecasts then
         gl.clear(1, 1, 1, 0)
         -- Zusammenfassung links oben
-        font:write(20, 10, "Wind: " .. conditions.wind_string, 40, 1,1,1,1)
-        font:write(20, 60, "Humidity: " .. conditions.relative_humidity, 40, 1,1,1,1)
-        font:write(20, 110,conditions.weather, 40, 1,1,1,1)
+        res.font:write(20, 10, "Wind: " .. conditions.wind_string, 40, 1,1,1,1)
+        res.font:write(20, 60, "Humidity: " .. conditions.relative_humidity, 40, 1,1,1,1)
+        res.font:write(20, 110,conditions.weather, 40, 1,1,1,1)
 
         -- Grosse Temperaturanzeige
         local temp = tonumber(conditions.temp_c)
         local str_temp = string.format("%d", temp)
         if temp < -9 then 
-            font:write(520, 0, str_temp, 250, 1,1,1,0.9)
+            res.font:write(520, 0, str_temp, 250, 1,1,1,0.9)
         elseif temp < 0 then 
-            font:write(680, 0, str_temp, 250, 1,1,1,0.9)
+            res.font:write(680, 0, str_temp, 250, 1,1,1,0.9)
         elseif temp < 10 then
-            font:write(720, 0, str_temp, 250, 1,1,1,0.9)
+            res.font:write(720, 0, str_temp, 250, 1,1,1,0.9)
         else
-            font:write(630, 0, str_temp, 250, 1,1,1,0.9)
+            res.font:write(630, 0, str_temp, 250, 1,1,1,0.9)
         end
-        font:write(900, 18, "°C", 100, 1,1,1,0.9)
+        res.font:write(900, 18, "°C", 100, 1,1,1,0.9)
 
         -- Vorhersage
         shader:use{bright = 0.5 - bright}
@@ -234,14 +234,12 @@ function node.render()
             else
                 icon:draw(x, 640, x + 100, 740)
             end
-            font:write(x + 120, 640, forecast.date.weekday_short, 40, 1,1,1,0.8)
-            font:write(x + 120, 675, forecast.high.celsius, 40, 1,1,1,1)
-            font:write(x + 120, 710, forecast.low.celsius, 40, .2,.2,.2,1)
-            font:write(x, 745, forecast.conditions, 20, 1,1,1,0.8)
+            res.font:write(x + 120, 640, forecast.date.weekday_short, 40, 1,1,1,0.8)
+            res.font:write(x + 120, 675, forecast.high.celsius, 40, 1,1,1,1)
+            res.font:write(x + 120, 710, forecast.low.celsius, 40, .2,.2,.2,1)
+            res.font:write(x, 745, forecast.conditions, 20, 1,1,1,0.8)
         end
         util.draw_correct(res.wunderground, 800, 650, 1020, 760)
-
-        -- font:write(20, 700, weather.forecast_information.city, 52, 1,1,1,0.8)
 
         overlay = resource.create_snapshot()
     end
