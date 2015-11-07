@@ -1,7 +1,5 @@
 = A hand-drawn weather display
 
-{{screenshot.jpg|Screenshot}}
-
 == Configuration
 
 === API Key (key)
