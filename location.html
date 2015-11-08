@@ -3,11 +3,6 @@
     <script src='hosted.js'></script>
     <script src='jquery-2.1.4.min.js'></script>
     <script src='typeahead.jquery.js'></script>
-    <script>
-      window.infobeamer.getConfig(function(config) {
-        console.log("config set to ", config);
-      })
-    </script>
     <style>
       body {
           height: 300px;
@@ -90,6 +85,9 @@
         console.log(selected);
         window.setConfig(selected['l'].replace('/q/', ''));
       });
+      window.infobeamer.getConfig(function(config) {
+        $('location').val(config);
+      })
     </script>
   </body>
 </html>
