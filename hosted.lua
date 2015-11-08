@@ -1,6 +1,6 @@
 -- Part of info-beamer hosted
 --
--- Copyright (c) 2014, Florian Wesch <fw@dividuum.de>
+-- Copyright (c) 2014,2015, Florian Wesch <fw@dividuum.de>
 -- All rights reserved.
 --
 -- Redistribution and use in source and binary forms, with or without
@@ -43,15 +43,9 @@ local resource_types = {
             return surface
         end
         function image.load()
-            if surface then
-                local state = surface:state()
-                return state ~= "loading"
-            else
-                surface = resource.load_image_async(value.asset_name)
-                return false
-                -- surface = resource.load_image(value.asset_name)
-                -- return true
-            end
+            image.ensure_loaded()
+            local state = surface:state()
+            return state ~= "loading"
         end
         function image.get_surface()
             return image.ensure_loaded()
@@ -81,13 +75,9 @@ local resource_types = {
             return surface
         end
         function video.load(opt)
-            if surface then
-                local state = surface:state()
-                return state ~= "loading"
-            else
-                surface = util.videoplayer(value.asset_name, opt)
-                return false
-            end
+            video.ensure_loaded()
+            local state = surface:state()
+            return state ~= "loading"
         end
         function video.get_surface()
             return video.ensure_loaded()
@@ -104,30 +94,42 @@ local resource_types = {
         return video
     end;
     ["child"] = function(value)
+        local surface
         local child = {
             asset_name = value.asset_name,
             filename = value.filename,
             type = value.type,
         }
         function child.ensure_loaded()
-            return resource.render_child(value.asset_name)
+            if surface then
+                surface:dispose()
+            end
+            surface = resource.render_child(value.asset_name)
+            return surface
         end
         function child.load()
             return true
         end
         function child.get_surface()
-            return resource.render_child(value.asset_name)
+            return child.ensure_loaded()
         end
         function child.draw(...)
-            resource.render_child(value.asset_name):draw(...)
+            child.ensure_loaded():draw(...)
         end
         function child.unload()
+            if surface then
+                surface:dispose()
+                surface = nil
+            end
         end
         return child
     end;
 }
 
 local types = {
+    ["text"] = function(value)
+        return value
+    end;
     ["string"] = function(value)
         return value
     end;
@@ -152,6 +154,9 @@ local types = {
         color.rgba_table = {color.r, color.g, color.b, color.a}
         color.rgba = function()
             return color.r, color.g, color.b, color.a
+        end
+        color.rgb_with_a = function(a)
+            return color.r, color.g, color.b, a
         end
         color.clear = function()
             gl.clear(color.r, color.g, color.b, color.a)

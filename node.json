@@ -11,12 +11,12 @@
         "type": "string",
         "default": ""
     }, {
-        "title": "Location",
-        "ui_width": 6,
-        "name": "location",
-        "doc_link": true,
-        "type": "string",
-        "default": "Karlsruhe"
+      "title": "Location",
+      "ui_width": 6,
+      "name": "location",
+      "type": "custom",
+      "page": "location.html",
+      "default": "Karlsruhe"
     }, {
         "title": "Time Zone",
         "ui_width": 4,
