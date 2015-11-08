@@ -83,10 +83,11 @@
         display: 'name',
       }).bind('typeahead:select', function(ev, selected) {
         console.log(selected);
-        window.setConfig(selected['l'].replace('/q/', ''));
+        window.infobeamer.setConfig(selected['l'].replace('/q/', ''));
       });
       window.infobeamer.getConfig(function(config) {
-        $('location').val(config);
+        console.log("current config:", config);
+        $('.location').val(config);
       })
     </script>
   </body>
