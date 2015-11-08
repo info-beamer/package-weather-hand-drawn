@@ -1,15 +1,13 @@
 <html>
   <head>
+    <script src='hosted.js'></script>
     <script src='jquery-2.1.4.min.js'></script>
     <script src='typeahead.jquery.js'></script>
     <script>
-      window.infobeamer = {
-        currentConfig: function(config) {
-          console.log('current config is ', config);
-        }
-      }
+      window.infobeamer.getConfig(function(config) {
+        console.log("config set to ", config);
+      })
     </script>
-    <script src='hosted.js'></script>
     <style>
       body {
           height: 300px;
