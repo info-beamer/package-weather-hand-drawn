@@ -11,15 +11,8 @@
         "type": "string",
         "default": ""
     }, {
-      "title": "Location",
-      "ui_width": 6,
-      "name": "location",
-      "type": "custom",
-      "page": "location.html",
-      "default": "Karlsruhe"
-    }, {
         "title": "Time Zone",
-        "ui_width": 4,
+        "ui_width": 6,
         "name": "timezone",
         "doc_link": true,
         "type": "select",
@@ -29,5 +22,12 @@
             ["Europe/Berlin", "Europa / Berlin"]
         ],
         "default": "UTC"
+    }, {
+      "title": "",
+      "ui_width": 12,
+      "name": "location",
+      "type": "custom",
+      "page": "location.html",
+      "default": "Karlsruhe"
     }]
 }
