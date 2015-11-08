@@ -92,7 +92,7 @@
         },
         display: function(val) {
           return val.name + '(' + val['l'] + ')';
-        },,,,
+        },
       }).bind('typeahead:select', function(ev, selected) {
         console.log(selected);
         window.infobeamer.setConfig(selected['l'].replace('/q/', ''));
