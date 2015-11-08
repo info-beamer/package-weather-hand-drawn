@@ -10,6 +10,8 @@
       }
       .title {
           background-color: #eee;
+          font-weight: bold;
+          padding: 4px;
       }
       .tt-input,.tt-hint {
           width: 300px;
@@ -58,7 +60,7 @@
       Customize your weather display
     </div>
     <div>
-      <b>Location:</b><br>
+      Location:<br>
       <input type='text' class='location'>
     </div>
     <script>
@@ -69,7 +71,6 @@
       },{
         name: 'wunder',
         source: function(query, _, cb) {
-          console.log(query, cb);
           $.getJSON("http://autocomplete.wunderground.com/aq?cb=?", {
             query: query,
           }).done(function(result) {
@@ -79,7 +80,7 @@
         display: 'name',
       }).bind('typeahead:select', function(ev, selected) {
         console.log(selected);
-        window.setConfig(selected['l']);
+        window.setConfig(selected['l'].replace('/q/', '');
       });
     </script>
   </body>
