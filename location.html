@@ -6,8 +6,10 @@
     <style>
       body {
           height: 300px;
+          margin: 0;
+      }
+      .title {
           background-color: #eee;
-          padding-left: 0;
       }
       .tt-input,.tt-hint {
           width: 300px;
@@ -52,7 +54,13 @@
     </style>
   </head>
   <body>
-    <input type='text' class='location'>
+    <div class='title'>
+      Customize your weather display
+    </div>
+    <div>
+      <b>Location:</b><br>
+      <input type='text' class='location'>
+    </div>
     <script>
       $(".location").typeahead({
         hint: true,
