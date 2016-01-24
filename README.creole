@@ -9,10 +9,7 @@ there and copy your API key into this field.
 
 === Location (location)
 
-Specifies the weather location. The value required in this field can be queried using the wunderground autocomplete API.
-
-Query http://autocomplete.wunderground.com/aq?query=Berlin. Then copy the value in the {{{l}}} field without the leading
-{{{/q}}}. In the {{{Berlin}}} example this would lead to the value {{{zmw:00000.10.10389}}}.
+Type in a location and you'll get a dropdown of all possible matches. Select the location you want to display.
 
 === Timezone (timezone)
 
