@@ -84,7 +84,7 @@
       },{
         name: 'wunder',
         source: function(query, _, cb) {
-          $.getJSON("http://autocomplete.wunderground.com/aq?cb=?", {
+          $.getJSON("https://autocomplete.wunderground.com/aq?cb=?", {
             query: query,
           }).done(function(result) {
             cb(result.RESULTS);
