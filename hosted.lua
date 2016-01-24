@@ -145,6 +145,9 @@ local types = {
     ["duration"] = function(value)
         return value
     end;
+    ["custom"] = function(value)
+        return value
+    end;
     ["color"] = function(value)
         local color = {}
         color.r = value.r
